@@ -6,16 +6,11 @@ import 'package:built_value_generator/src/dart_types.dart';
 import 'package:built_value_generator/src/metadata.dart'
     show metadataToStringValue;
 
-part 'memoized_getter.g.dart';
+class MemoizedGetter {
+  String returnType;
+  String name;
 
-abstract class MemoizedGetter
-    implements Built<MemoizedGetter, MemoizedGetterBuilder> {
-  String get returnType;
-  String get name;
-
-  factory MemoizedGetter([void Function(MemoizedGetterBuilder) updates]) =
-      _$MemoizedGetter;
-  MemoizedGetter._();
+  MemoizedGetter({this.returnType, this.name});
 
   static Iterable<MemoizedGetter> fromClassElement(ClassElement classElement) {
     return classElement.fields
@@ -24,9 +19,9 @@ abstract class MemoizedGetter
             !field.getter.isAbstract &&
             field.getter.metadata.any(
                 (metadata) => metadataToStringValue(metadata) == 'memoized'))
-        .map((field) => MemoizedGetter((b) => b
-          ..returnType = DartTypes.getName(field.getter.returnType)
-          ..name = field.displayName))
+        .map((field) => MemoizedGetter(
+            returnType: DartTypes.getName(field.getter.returnType),
+            name: field.displayName))
         .toList();
   }
 }

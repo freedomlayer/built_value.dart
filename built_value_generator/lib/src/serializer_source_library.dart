@@ -15,15 +15,10 @@ import 'package:source_gen/source_gen.dart';
 
 import 'dart_types.dart';
 
-part 'serializer_source_library.g.dart';
+class SerializerSourceLibrary {
+  LibraryElement element;
 
-abstract class SerializerSourceLibrary
-    implements Built<SerializerSourceLibrary, SerializerSourceLibraryBuilder> {
-  LibraryElement get element;
-
-  factory SerializerSourceLibrary(LibraryElement element) =>
-      _$SerializerSourceLibrary._(element: element);
-  SerializerSourceLibrary._();
+  SerializerSourceLibrary(this.element);
 
   @memoized
   ParsedLibraryResult get parsedLibrary =>

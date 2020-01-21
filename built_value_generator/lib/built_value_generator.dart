@@ -22,6 +22,8 @@ class BuiltValueGenerator extends Generator {
   Future<String> generate(LibraryReader library, BuildStep buildStep) async {
     var result = StringBuffer();
 
+    print('generate()1');
+
     try {
       final enumCode = EnumSourceLibrary(library.element).generateCode();
       if (enumCode != null) result.writeln(enumCode);
@@ -46,10 +48,15 @@ class BuiltValueGenerator extends Generator {
           st);
     }
 
+    print('generate()2');
+
     for (var element in library.allElements) {
       if (element is ClassElement &&
           ValueSourceClass.needsBuiltValue(element)) {
         try {
+          print('generate()3');
+          print('element = $element');
+          print('\n');
           result.writeln(ValueSourceClass(element).generateCode() ?? '');
         } catch (e, st) {
           result.writeln(_error(e));

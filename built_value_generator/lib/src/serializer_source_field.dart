@@ -14,10 +14,7 @@ import 'package:built_value_generator/src/dart_types.dart';
 import 'package:built_value_generator/src/metadata.dart'
     show metadataToStringValue;
 
-part 'serializer_source_field.g.dart';
-
-abstract class SerializerSourceField
-    implements Built<SerializerSourceField, SerializerSourceFieldBuilder> {
+class SerializerSourceField {
   static final BuiltMap<String, String> typesWithBuilder =
       BuiltMap<String, String>({
     'BuiltList': 'ListBuilder',
@@ -26,23 +23,14 @@ abstract class SerializerSourceField
     'BuiltSet': 'SetBuilder',
     'BuiltSetMultimap': 'SetMultimapBuilder',
   });
-  BuiltValue get settings;
-  ParsedLibraryResult get parsedLibrary;
-  FieldElement get element;
-  @nullable
-  FieldElement get builderElement;
+  BuiltValue settings;
+  ParsedLibraryResult parsedLibrary;
+  FieldElement element;
+  // @nullable
+  FieldElement builderElement;
 
-  factory SerializerSourceField(
-          BuiltValue settings,
-          ParsedLibraryResult parsedLibrary,
-          FieldElement element,
-          FieldElement builderElement) =>
-      _$SerializerSourceField._(
-          settings: settings,
-          parsedLibrary: parsedLibrary,
-          element: element,
-          builderElement: builderElement);
-  SerializerSourceField._();
+  SerializerSourceField(
+      this.settings, this.parsedLibrary, this.element, this.builderElement);
 
   @memoized
   bool get isSerializable =>

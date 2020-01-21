@@ -764,7 +764,9 @@ Future<String> generate(String source) async {
   String error;
   void captureError(LogRecord logRecord) {
     if (logRecord.error is InvalidGenerationSourceError) {
-      if (error != null) throw StateError('Expected at most one error.');
+      if (error != null) {
+        throw StateError('Expected at most one error.');
+      }
       error = logRecord.error.toString();
     }
   }
@@ -772,6 +774,7 @@ Future<String> generate(String source) async {
   var writer = InMemoryAssetWriter();
   await testBuilder(builder, srcs,
       rootPackage: pkgName, writer: writer, onLog: captureError);
+
   return error ??
       String.fromCharCodes(
           writer.assets[AssetId(pkgName, 'lib/value.g.dart')] ?? []);

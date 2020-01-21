@@ -11,17 +11,11 @@ import 'package:built_value/built_value.dart';
 
 import 'dart_types.dart';
 
-part 'enum_source_field.g.dart';
+class EnumSourceField {
+  ParsedLibraryResult parsedLibrary;
+  FieldElement element;
 
-abstract class EnumSourceField
-    implements Built<EnumSourceField, EnumSourceFieldBuilder> {
-  ParsedLibraryResult get parsedLibrary;
-  FieldElement get element;
-
-  factory EnumSourceField(
-          ParsedLibraryResult parsedLibrary, FieldElement element) =>
-      _$EnumSourceField._(parsedLibrary: parsedLibrary, element: element);
-  EnumSourceField._();
+  EnumSourceField(this.parsedLibrary, this.element);
 
   @memoized
   String get name => element.displayName;

@@ -18,20 +18,15 @@ import 'package:built_value_generator/src/value_source_class.dart';
 
 import 'dart_types.dart';
 
-part 'serializer_source_class.g.dart';
-
-abstract class SerializerSourceClass
-    implements Built<SerializerSourceClass, SerializerSourceClassBuilder> {
-  ClassElement get element;
+class SerializerSourceClass {
+  ClassElement element;
   @nullable
-  ClassElement get builderElement;
+  ClassElement builderElement;
 
-  factory SerializerSourceClass(ClassElement element) =>
-      _$SerializerSourceClass._(
-          element: element,
-          builderElement:
-              element.library.getType(element.displayName + 'Builder'));
-  SerializerSourceClass._();
+  SerializerSourceClass(element) {
+    this.element = element;
+    builderElement = element.library.getType(element.displayName + 'Builder');
+  }
 
   @memoized
   ParsedLibraryResult get parsedLibrary =>

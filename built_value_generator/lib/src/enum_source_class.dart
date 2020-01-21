@@ -13,16 +13,12 @@ import 'package:built_value_generator/src/enum_source_field.dart';
 import 'package:built_value_generator/src/strings.dart';
 import 'package:quiver/iterables.dart';
 
-part 'enum_source_class.g.dart';
+class EnumSourceClass {
+  ClassElement element;
 
-abstract class EnumSourceClass
-    implements Built<EnumSourceClass, EnumSourceClassBuilder> {
-  ClassElement get element;
-
-  factory EnumSourceClass(
-          ParsedLibraryResult parsedLibrary, ClassElement element) =>
-      _$EnumSourceClass._(element: element);
-  EnumSourceClass._();
+  EnumSourceClass(parsedLibrary, element) {
+    this.element = element;
+  }
 
   @memoized
   ParsedLibraryResult get parsedLibrary =>

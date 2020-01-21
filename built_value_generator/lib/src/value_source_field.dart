@@ -16,8 +16,6 @@ import 'package:built_value_generator/src/fields.dart' show collectFields;
 import 'package:built_value_generator/src/metadata.dart'
     show metadataToStringValue;
 
-part 'value_source_field.g.dart';
-
 const _suggestedTypes = <String, String>{
   'List': 'BuiltList',
   'Map': 'BuiltMap',
@@ -26,25 +24,15 @@ const _suggestedTypes = <String, String>{
   'SetMultimap': 'BuiltSetMultimap',
 };
 
-abstract class ValueSourceField
-    implements Built<ValueSourceField, ValueSourceFieldBuilder> {
-  BuiltValue get settings;
-  ParsedLibraryResult get parsedLibrary;
-  FieldElement get element;
-  @nullable
-  FieldElement get builderElement;
+class ValueSourceField {
+  BuiltValue settings;
+  ParsedLibraryResult parsedLibrary;
+  FieldElement element;
+  // @nullable
+  FieldElement builderElement;
 
-  factory ValueSourceField(
-          BuiltValue settings,
-          ParsedLibraryResult parsedLibrary,
-          FieldElement element,
-          FieldElement builderElement) =>
-      _$ValueSourceField._(
-          settings: settings,
-          parsedLibrary: parsedLibrary,
-          element: element,
-          builderElement: builderElement);
-  ValueSourceField._();
+  ValueSourceField(
+      this.settings, this.parsedLibrary, this.element, this.builderElement);
 
   @memoized
   String get name => element.displayName;
@@ -218,44 +206,42 @@ abstract class ValueSourceField
     var result = <GeneratorError>[];
 
     if (!isGetter) {
-      result.add(
-          GeneratorError((b) => b..message = 'Make field $name a getter.'));
+      result.add(GeneratorError(message: 'Make field $name a getter.'));
     }
 
     if (type == 'dynamic') {
-      result.add(GeneratorError((b) => b
-        ..message = 'Make field $name have non-dynamic type. '
-            'If you are already specifying a type, '
-            'please make sure the type is correctly imported.'));
+      result.add(GeneratorError(
+          message: 'Make field $name have non-dynamic type. '
+              'If you are already specifying a type, '
+              'please make sure the type is correctly imported.'));
     }
 
     if (name.startsWith('_')) {
-      result.add(GeneratorError((b) =>
-          b..message = 'Make field $name public; remove the underscore.'));
+      result.add(GeneratorError(
+          message: 'Make field $name public; remove the underscore.'));
     }
 
     if (_suggestedTypes.keys.contains(type)) {
-      result.add(GeneratorError((b) => b
-        ..message = 'Make field "$name" have type "${_suggestedTypes[type]}". '
-            'The current type, "$type", is not allowed because it is mutable.'));
+      result.add(GeneratorError(
+          message: 'Make field "$name" have type "${_suggestedTypes[type]}". '
+              'The current type, "$type", is not allowed because it is mutable.'));
     }
 
     if (builderFieldExists) {
       if (buildElementType != type &&
           buildElementType != _toBuilderType(element.type, type)) {
-        result.add(GeneratorError((b) => b
-          ..message = 'Make builder field $name have type: '
-              '$type (or, if applicable, builder)'));
+        result.add(GeneratorError(
+            message: 'Make builder field $name have type: '
+                '$type (or, if applicable, builder)'));
       }
     }
 
     if (builderFieldExists &&
         !builderFieldIsNormalField &&
         !builderFieldIsGetterSetterPair) {
-      result.add(GeneratorError((b) => b
-        ..message =
-            'Make builder field $name a normal field or a getter/setter '
-                'pair.'));
+      result.add(GeneratorError(
+          message: 'Make builder field $name a normal field or a getter/setter '
+              'pair.'));
     }
 
     return result;
