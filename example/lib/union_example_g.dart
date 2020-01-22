@@ -158,16 +158,6 @@ class _$SimpleUnion extends SimpleUnion {
 class SimpleUnionBuilder implements Builder<SimpleUnion, SimpleUnionBuilder> {
   _$SimpleUnion _$v;
 
-  /*
-  int _anInt;
-  int get anInt => _$this._anInt;
-  set anInt(int anInt) => _$this._anInt = anInt;
-
-  String _aString;
-  String get aString => _$this._aString;
-  set aString(String aString) => _$this._aString = aString;
-  */
-
   void empty() {
     _$v = _$SimpleUnion._(_$SimpleUnionType.empty, []);
   }
@@ -188,17 +178,6 @@ class SimpleUnionBuilder implements Builder<SimpleUnion, SimpleUnionBuilder> {
   }
 
   SimpleUnionBuilder();
-
-  /*
-  SimpleUnionBuilder get _$this {
-    if (_$v != null) {
-      _anInt = _$v.anInt;
-      _aString = _$v.aString;
-      _$v = null;
-    }
-    return this;
-  }
-  */
 
   @override
   void replace(SimpleUnion other) {
