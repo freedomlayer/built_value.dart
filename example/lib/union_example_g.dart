@@ -34,10 +34,14 @@ class _$SimpleUnionSerializer implements StructuredSerializer<SimpleUnion> {
               serializers.serialize(value0,
                   specifiedType: const FullType(String))
             ],
-        fooInt: (value0) => <Object>[
-              'fooInt',
-              serializers.serialize(value0, specifiedType: const FullType(Foo))
-            ],
+        fooInt: (value0) {
+          print('value0 = $value0');
+          print(value0.data);
+          return <Object>[
+            'fooInt',
+            serializers.serialize(value0, specifiedType: const FullType(Foo))
+          ];
+        },
         fooString: (value0) => <Object>[
               'fooString',
               serializers.serialize(value0, specifiedType: const FullType(Foo))
@@ -52,49 +56,47 @@ class _$SimpleUnionSerializer implements StructuredSerializer<SimpleUnion> {
     final builder = new SimpleUnionBuilder();
 
     final iterator = serialized.iterator;
-    while (iterator.moveNext()) {
-      final key = iterator.current as String;
-      switch (key) {
-        case 'empty':
-          builder.empty();
-          break;
-        case 'integer':
-          iterator.moveNext();
-          final dynamic value0 = iterator.current;
-          builder.integer(serializers.deserialize(value0,
-              specifiedType: const FullType(int)));
-          break;
-        case 'tuple':
-          iterator.moveNext();
-          final dynamic value0 = iterator.current;
-          iterator.moveNext();
-          final dynamic value1 = iterator.current;
+    iterator.moveNext();
+    final key = iterator.current as String;
+    switch (key) {
+      case 'empty':
+        builder.empty();
+        break;
+      case 'integer':
+        iterator.moveNext();
+        final dynamic value0 = iterator.current;
+        builder.integer(serializers.deserialize(value0,
+            specifiedType: const FullType(int)));
+        break;
+      case 'tuple':
+        iterator.moveNext();
+        final dynamic value0 = iterator.current;
+        iterator.moveNext();
+        final dynamic value1 = iterator.current;
 
-          builder.tuple(
-              serializers.deserialize(value0,
-                  specifiedType: const FullType(int)),
-              serializers.deserialize(value1,
-                  specifiedType: const FullType(String)));
-          break;
-        case 'string':
-          iterator.moveNext();
-          final dynamic value0 = iterator.current;
-          builder.integer(serializers.deserialize(value0,
-              specifiedType: const FullType(String)));
-          break;
-        case 'fooInt':
-          iterator.moveNext();
-          final dynamic value0 = iterator.current;
-          builder.fooInt(serializers.deserialize(value0,
-              specifiedType: const FullType(Foo)));
-          break;
-        case 'fooString':
-          iterator.moveNext();
-          final dynamic value0 = iterator.current;
-          builder.fooInt(serializers.deserialize(value0,
-              specifiedType: const FullType(Foo)));
-          break;
-      }
+        builder.tuple(
+            serializers.deserialize(value0, specifiedType: const FullType(int)),
+            serializers.deserialize(value1,
+                specifiedType: const FullType(String)));
+        break;
+      case 'string':
+        iterator.moveNext();
+        final dynamic value0 = iterator.current;
+        builder.integer(serializers.deserialize(value0,
+            specifiedType: const FullType(String)));
+        break;
+      case 'fooInt':
+        iterator.moveNext();
+        final dynamic value0 = iterator.current;
+        builder.fooInt(serializers.deserialize(value0,
+            specifiedType: const FullType(Foo)));
+        break;
+      case 'fooString':
+        iterator.moveNext();
+        final dynamic value0 = iterator.current;
+        builder.fooInt(serializers.deserialize(value0,
+            specifiedType: const FullType(Foo)));
+        break;
     }
 
     return builder.build();
@@ -186,7 +188,12 @@ class _$SimpleUnion extends SimpleUnion {
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, _type.hashCode), _values.hashCode));
+    var curVal = $jc(0, _type.hashCode);
+    for (final value in _values) {
+      curVal = $jc(curVal, value.hashCode);
+    }
+
+    return $jf(curVal);
   }
 
   @override

@@ -34,5 +34,6 @@ part 'serializers.g.dart';
   SimpleValue,
   VerySimpleValue,
   SimpleUnion,
+  Foo,
 ])
 final Serializers serializers = _$serializers;

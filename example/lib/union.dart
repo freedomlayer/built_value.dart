@@ -15,8 +15,43 @@ part 'union_example_g.dart';
 
 class Foo<T> {
   T data;
-  Foo(data);
+  Foo(data): data = data;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) {
+      return true;
+    }
+    return other is Foo<T> &&
+        data == other.data;
+  }
 }
+
+final fooSerializer = FooSerializer<int>();
+
+class FooSerializer<T> implements StructuredSerializer<Foo<T>> {
+  @override
+  final Iterable<Type> types = const [Foo];
+  @override
+  final String wireName = 'Foo';
+
+  @override
+  Iterable<Object> serialize(Serializers serializers, Foo<T> object,
+      {FullType specifiedType = FullType.unspecified}) {
+    return <Object>[serializers.serialize(object.data, specifiedType: FullType(T))];
+  }
+
+  @override
+  Foo<T> deserialize(Serializers serializers, Iterable<Object> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+
+    final iterator = serialized.iterator;
+    iterator.moveNext();
+    return Foo(serializers.deserialize(iterator.current, specifiedType: FullType(T)));
+  }
+}
+
+
 
 /// Example of how to use built_value.
 ///

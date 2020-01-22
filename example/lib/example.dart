@@ -98,13 +98,14 @@ void example() {
     value8,
     modifiedAnimals[0],
     modifiedAnimals[1],
-    // unionValue1,
+    unionValue1,
     unionValue2,
     unionValue3,
     unionValue4,
   ]) {
     var serialized = serializers.serialize(object);
     print(serialized);
+    // print(serializers.deserialize(serialized));
     assert(serializers.deserialize(serialized) == object);
   }
 

@@ -17,6 +17,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(ValidatedValue.serializer)
       ..add(VerySimpleValue.serializer)
       ..add(SimpleUnion.serializer)
+      ..add(fooSerializer)
       ..addBuilderFactory(
           const FullType(BuiltMap,
               const [const FullType(String), const FullType(JsonObject)]),
