@@ -52,21 +52,25 @@ void example() {
   final modifiedAnimals =
       animals.map((animal) => animal.rebuild((b) => b.legs++)).toList();
 
-
   // Unions
   var foo = Foo<int>(3);
-  final unionValue = SimpleUnion((b) => b
-      ..integer = 3
-      ..fooInt = foo
-    );
+  final unionValue1 = SimpleUnion((b) => b
+    ..integer = 3
+    ..fooInt = foo);
 
-  var descString = unionValue.match(
+  var descString = unionValue1.match(
       integer: (_) => 'integer',
       string: (_) => 'string',
       fooInt: (_) => 'fooInt',
       fooString: (_) => 'fooString');
 
   assert(descString == 'fooInt');
+
+  // Check equality operator:
+  final unionValue2 = SimpleUnion((b) => b..integer = 3);
+  final unionValue3 = SimpleUnion((b) => b..integer = 3);
+
+  assert(unionValue2 == unionValue3);
 
   // Everything is serializable.
   for (var object in [
