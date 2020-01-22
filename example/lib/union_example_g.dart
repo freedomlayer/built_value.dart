@@ -158,16 +158,16 @@ class SimpleUnionBuilder implements Builder<SimpleUnion, SimpleUnionBuilder> {
   set aString(String aString) => _$this._aString = aString;
   */
 
-  set integer(int value) {
+  void integer(int value) {
     _$v = _$SimpleUnion._(_$SimpleUnionType.integer, value);
   }
-  set string(String value) {
+  void string(String value) {
     _$v = _$SimpleUnion._(_$SimpleUnionType.string, value);
   }
-  set fooInt(Foo<int> value) {
+  void fooInt(Foo<int> value) {
     _$v = _$SimpleUnion._(_$SimpleUnionType.fooInt, value);
   }
-  set fooString(Foo<String> value) {
+  void fooString(Foo<String> value) {
     _$v = _$SimpleUnion._(_$SimpleUnionType.fooString, value);
   }
 

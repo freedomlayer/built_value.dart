@@ -52,11 +52,11 @@ void example() {
   final modifiedAnimals =
       animals.map((animal) => animal.rebuild((b) => b.legs++)).toList();
 
+
   // Unions
   var foo = Foo<int>(3);
-  final unionValue1 = SimpleUnion((b) => b
-    ..integer = 3
-    ..fooInt = foo);
+  final unionValue1 = SimpleUnion((b) => b.fooInt(foo)
+    );
 
   var descString = unionValue1.match(
       integer: (_) => 'integer',
@@ -67,8 +67,8 @@ void example() {
   assert(descString == 'fooInt');
 
   // Check equality operator:
-  final unionValue2 = SimpleUnion((b) => b..integer = 3);
-  final unionValue3 = SimpleUnion((b) => b..integer = 3);
+  final unionValue2 = SimpleUnion((b) => b.integer(3));
+  final unionValue3 = SimpleUnion((b) => b.integer(3));
 
   assert(unionValue2 == unionValue3);
 
