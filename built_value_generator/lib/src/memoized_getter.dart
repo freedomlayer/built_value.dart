@@ -1,7 +1,6 @@
 library built_value_generator.memoized_getter;
 
 import 'package:analyzer/dart/element/element.dart';
-import 'package:built_value/built_value.dart';
 import 'package:built_value_generator/src/dart_types.dart';
 import 'package:built_value_generator/src/metadata.dart'
     show metadataToStringValue;
