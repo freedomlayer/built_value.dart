@@ -33,7 +33,9 @@ abstract class SimpleUnion implements Built<SimpleUnion, SimpleUnionBuilder> {
   // static Serializer<SimpleValue> get serializer => _$simpleValueSerializer;
 
   T match<T>({
+      @required T Function () empty,
       @required T Function (int) integer,
+      @required T Function (int, String) tuple,
       @required T Function (String) string,
       @required T Function (Foo<int>) fooInt,
       @required T Function (Foo<String>) fooString,

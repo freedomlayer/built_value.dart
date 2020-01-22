@@ -61,7 +61,9 @@ class _$SimpleValueSerializer implements StructuredSerializer<SimpleValue> {
 
 
 enum _$SimpleUnionType {
+  empty,
   integer,
+  tuple,
   string,
   fooInt,
   fooString,
@@ -69,7 +71,7 @@ enum _$SimpleUnionType {
 
 class _$SimpleUnion extends SimpleUnion {
   final _$SimpleUnionType _type;
-  final Object _value;
+  final List<Object> _value;
 
   factory _$SimpleUnion([void Function(SimpleUnionBuilder) updates]) =>
       (new SimpleUnionBuilder()..update(updates)).build();
@@ -94,20 +96,26 @@ class _$SimpleUnion extends SimpleUnion {
 
   @override
   T match<T>({
+      @required T Function () empty,
       @required T Function (int) integer,
+      @required T Function (int, String) tuple,
       @required T Function (String) string,
       @required T Function (Foo<int>) fooInt,
       @required T Function (Foo<String>) fooString,
     }) {
     switch (_type) {
+      case _$SimpleUnionType.empty:
+        return empty();
       case _$SimpleUnionType.integer:
-        return integer(_value);
+        return integer(_value[0]);
+      case _$SimpleUnionType.tuple:
+        return tuple(_value[0], _value[1]);
       case _$SimpleUnionType.string:
-        return string(_value);
+        return string(_value[0]);
       case _$SimpleUnionType.fooInt:
-        return fooInt(_value);
+        return fooInt(_value[0]);
       case _$SimpleUnionType.fooString:
-        return fooString(_value);
+        return fooString(_value[0]);
       default:
         // TODO: Better exception to throw here?
         throw Exception('unknown type');
@@ -126,10 +134,12 @@ class _$SimpleUnion extends SimpleUnion {
     if (identical(other, this)) return true;
     return other is SimpleUnion &&
         other.match(
-          integer: (otherValue) => (_type == _$SimpleUnionType.integer && _value == otherValue),
-          string: (otherValue) => (_type == _$SimpleUnionType.string && _value == otherValue),
-          fooInt: (otherValue) => (_type == _$SimpleUnionType.fooInt && _value == otherValue),
-          fooString: (otherValue) => (_type == _$SimpleUnionType.fooString && _value == otherValue),
+          empty: () => _type == _$SimpleUnionType.empty,
+          integer: (otherValue0) => _type == _$SimpleUnionType.integer && _value[0] == otherValue0,
+          tuple: (otherValue0, otherValue1) => _type == _$SimpleUnionType.empty && _value[0] == otherValue0 && _value[1] == otherValue1,
+          string: (otherValue0) => _type == _$SimpleUnionType.string && _value[0] == otherValue0,
+          fooInt: (otherValue0) => _type == _$SimpleUnionType.fooInt && _value[0] == otherValue0,
+          fooString: (otherValue0) => _type == _$SimpleUnionType.fooString && _value[0] == otherValue0,
         );
   }
 
@@ -158,17 +168,23 @@ class SimpleUnionBuilder implements Builder<SimpleUnion, SimpleUnionBuilder> {
   set aString(String aString) => _$this._aString = aString;
   */
 
-  void integer(int value) {
-    _$v = _$SimpleUnion._(_$SimpleUnionType.integer, value);
+  void empty() {
+    _$v = _$SimpleUnion._(_$SimpleUnionType.empty, []);
   }
-  void string(String value) {
-    _$v = _$SimpleUnion._(_$SimpleUnionType.string, value);
+  void integer(int value0) {
+    _$v = _$SimpleUnion._(_$SimpleUnionType.integer, [value0]);
   }
-  void fooInt(Foo<int> value) {
-    _$v = _$SimpleUnion._(_$SimpleUnionType.fooInt, value);
+  void tuple(int value0, String value1) {
+    _$v = _$SimpleUnion._(_$SimpleUnionType.tuple, [value0, value1]);
   }
-  void fooString(Foo<String> value) {
-    _$v = _$SimpleUnion._(_$SimpleUnionType.fooString, value);
+  void string(String value0) {
+    _$v = _$SimpleUnion._(_$SimpleUnionType.string, [value0]);
+  }
+  void fooInt(Foo<int> value0) {
+    _$v = _$SimpleUnion._(_$SimpleUnionType.fooInt, [value0]);
+  }
+  void fooString(Foo<String> value0) {
+    _$v = _$SimpleUnion._(_$SimpleUnionType.fooString, [value0]);
   }
 
   SimpleUnionBuilder();

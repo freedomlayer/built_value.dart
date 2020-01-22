@@ -59,7 +59,9 @@ void example() {
     );
 
   var descString = unionValue1.match(
+      empty: () => 'empty',
       integer: (_) => 'integer',
+      tuple: (_1, _2) => 'tuple',
       string: (_) => 'string',
       fooInt: (_) => 'fooInt',
       fooString: (_) => 'fooString');
@@ -71,6 +73,20 @@ void example() {
   final unionValue3 = SimpleUnion((b) => b.integer(3));
 
   assert(unionValue2 == unionValue3);
+
+  // Check tuple:
+  final unionValue4 = SimpleUnion((b) => b.tuple(4, 'four'));
+
+  var res = unionValue4.match(
+      empty: () => [],
+      integer: (_) => [],
+      tuple: (res_num, res_string) => [res_num, res_string],
+      string: (_) => [],
+      fooInt: (_) => [],
+      fooString: (_) => []);
+
+  assert(res[0] == 4);
+  assert(res[1] == 'four');
 
   // Everything is serializable.
   for (var object in [
