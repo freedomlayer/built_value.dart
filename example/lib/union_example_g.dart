@@ -71,24 +71,17 @@ enum _$SimpleUnionType {
 
 class _$SimpleUnion extends SimpleUnion {
   final _$SimpleUnionType _type;
-  final List<Object> _value;
+  final List<Object> _values;
 
   factory _$SimpleUnion([void Function(SimpleUnionBuilder) updates]) =>
       (new SimpleUnionBuilder()..update(updates)).build();
 
-  /*
-  _$SimpleUnion.fromInteger(int value): type = _SimpleUnionType.integer, value = value;
-  _$SimpleUnion.fromString(String value): type = _SimpleUnionType.string, value = value;
-  _$SimpleUnion.fromFooInt(Foo<Int> value): type = _SimpleUnionType.fooInt, value = value;
-  _$SimpleUnion.fromFooInt(Foo<String> value): type = _SimpleUnionType.fooString, value = value;
-  */
-
-  _$SimpleUnion._(this._type, this._value) : super._() {
+  _$SimpleUnion._(this._type, this._values) : super._() {
     if (_type == null) {
       // TODO: Better exception to throw here?
       throw Exception('SimpleUnion: null type');
     }
-    if (_value == null) {
+    if (_values == null) {
       // TODO: Better exception to throw here?
       throw Exception('SimpleUnion: null value');
     }
@@ -107,15 +100,15 @@ class _$SimpleUnion extends SimpleUnion {
       case _$SimpleUnionType.empty:
         return empty();
       case _$SimpleUnionType.integer:
-        return integer(_value[0]);
+        return integer(_values[0]);
       case _$SimpleUnionType.tuple:
-        return tuple(_value[0], _value[1]);
+        return tuple(_values[0], _values[1]);
       case _$SimpleUnionType.string:
-        return string(_value[0]);
+        return string(_values[0]);
       case _$SimpleUnionType.fooInt:
-        return fooInt(_value[0]);
+        return fooInt(_values[0]);
       case _$SimpleUnionType.fooString:
-        return fooString(_value[0]);
+        return fooString(_values[0]);
       default:
         // TODO: Better exception to throw here?
         throw Exception('unknown type');
@@ -135,22 +128,22 @@ class _$SimpleUnion extends SimpleUnion {
     return other is SimpleUnion &&
         other.match(
           empty: () => _type == _$SimpleUnionType.empty,
-          integer: (otherValue0) => _type == _$SimpleUnionType.integer && _value[0] == otherValue0,
-          tuple: (otherValue0, otherValue1) => _type == _$SimpleUnionType.empty && _value[0] == otherValue0 && _value[1] == otherValue1,
-          string: (otherValue0) => _type == _$SimpleUnionType.string && _value[0] == otherValue0,
-          fooInt: (otherValue0) => _type == _$SimpleUnionType.fooInt && _value[0] == otherValue0,
-          fooString: (otherValue0) => _type == _$SimpleUnionType.fooString && _value[0] == otherValue0,
+          integer: (otherValue0) => _type == _$SimpleUnionType.integer && _values[0] == otherValue0,
+          tuple: (otherValue0, otherValue1) => _type == _$SimpleUnionType.empty && _values[0] == otherValue0 && _values[1] == otherValue1,
+          string: (otherValue0) => _type == _$SimpleUnionType.string && _values[0] == otherValue0,
+          fooInt: (otherValue0) => _type == _$SimpleUnionType.fooInt && _values[0] == otherValue0,
+          fooString: (otherValue0) => _type == _$SimpleUnionType.fooString && _values[0] == otherValue0,
         );
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, _type.hashCode), _value.hashCode));
+    return $jf($jc($jc(0, _type.hashCode), _values.hashCode));
   }
 
   @override
   String toString() => (newBuiltValueToStringHelper('SimpleUnion')
-        ..add('value', _value)
+        ..add('value', _values)
         ..add('type', _type))
       .toString();
 }
