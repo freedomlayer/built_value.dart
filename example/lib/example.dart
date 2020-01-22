@@ -86,6 +86,8 @@ void example() {
   assert(res[0] == 4);
   assert(res[1] == 'four');
 
+  final unionValue5 = SimpleUnion((b) => b.empty());
+
   // Everything is serializable.
   for (var object in [
     value,
@@ -102,6 +104,7 @@ void example() {
     unionValue2,
     unionValue3,
     unionValue4,
+    unionValue5,
   ]) {
     var serialized = serializers.serialize(object);
     print(serialized);
@@ -188,4 +191,50 @@ void standardJsonExample() {
   final serializedAgain2 = standardSerializers.serialize(value2);
   assert(serializedAccountWithDiscriminator.toString() ==
       serializedAgain2.toString());
+}
+
+void unionJsonExample() {
+  final standardSerializers =
+      (serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();
+
+  final simpleUnionTuple = SimpleUnion((b) => b.tuple(5, "five"));
+  // final simpleUnionEmpty = SimpleUnion((b) => b.empty());
+  // Use the serializeWith method to specify what type you're serializing.
+  final serialized =
+      standardSerializers.serializeWith(SimpleUnion.serializer, simpleUnionTuple);
+  print(serialized);
+
+  /*
+  assert(serializedAccount.toString() == serializedAgain.toString());
+
+  // In this second example we don't know the type we want to
+  // serialize/deserialize, so it has to be specified on the wire.
+  final serializedAccountWithDiscriminator = {
+    r'$': 'Account',
+    'id': 3,
+    'name': 'John Smith',
+    'keyValues': {
+      'visited': 1732,
+      'active': true,
+      'email': 'john.smith@example.com',
+      'tags': [74, 123, 4001],
+      'preferences': {
+        'showMenu': true,
+        'skipIntro': true,
+        'colorScheme': 'light',
+      }
+    }
+  };
+
+  // We don't have to specify the type when deserializing.
+  final value2 =
+      standardSerializers.deserialize(serializedAccountWithDiscriminator);
+  print(value2);
+  assert(value == value2);
+
+  // We don't have to specify the type when serializing.
+  final serializedAgain2 = standardSerializers.serialize(value2);
+  assert(serializedAccountWithDiscriminator.toString() ==
+      serializedAgain2.toString());
+  */
 }

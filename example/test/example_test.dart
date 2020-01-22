@@ -10,6 +10,7 @@ void main() {
     test('runs', () {
       example();
       standardJsonExample();
+      unionJsonExample();
     });
   });
 }
