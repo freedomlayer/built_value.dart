@@ -6,59 +6,100 @@ part of union;
 // BuiltValueGenerator
 // **************************************************************************
 
-/*
-Serializer<SimpleValue> _$simpleValueSerializer = new _$SimpleValueSerializer();
+Serializer<SimpleUnion> _$simpleUnionSerializer = new _$SimpleUnionSerializer();
 
-class _$SimpleValueSerializer implements StructuredSerializer<SimpleValue> {
+class _$SimpleUnionSerializer implements StructuredSerializer<SimpleUnion> {
   @override
-  final Iterable<Type> types = const [SimpleValue, _$SimpleValue];
+  final Iterable<Type> types = const [SimpleUnion, _$SimpleUnion];
   @override
-  final String wireName = 'SimpleValue';
+  final String wireName = 'SimpleUnion';
 
   @override
-  Iterable<Object> serialize(Serializers serializers, SimpleValue object,
+  Iterable<Object> serialize(Serializers serializers, SimpleUnion object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
-      'anInt',
-      serializers.serialize(object.anInt, specifiedType: const FullType(int)),
-    ];
-    if (object.aString != null) {
-      result
-        ..add('aString')
-        ..add(serializers.serialize(object.aString,
-            specifiedType: const FullType(String)));
-    }
+    final result = object.match(
+        empty: () => <Object>['empty'],
+        integer: (value0) => <Object>[
+              'integer',
+              serializers.serialize(value0, specifiedType: const FullType(int))
+            ],
+        tuple: (value0, value1) => <Object>[
+              'tuple',
+              serializers.serialize(value0, specifiedType: const FullType(int)),
+              serializers.serialize(value1,
+                  specifiedType: const FullType(String))
+            ],
+        string: (value0) => <Object>[
+              'string',
+              serializers.serialize(value0,
+                  specifiedType: const FullType(String))
+            ],
+        fooInt: (value0) => <Object>[
+              'fooInt',
+              serializers.serialize(value0, specifiedType: const FullType(Foo))
+            ],
+        fooString: (value0) => <Object>[
+              'fooString',
+              serializers.serialize(value0, specifiedType: const FullType(Foo))
+            ]);
+
     return result;
   }
 
   @override
-  SimpleValue deserialize(Serializers serializers, Iterable<Object> serialized,
+  SimpleUnion deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new SimpleValueBuilder();
+    final builder = new SimpleUnionBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
       final key = iterator.current as String;
-      iterator.moveNext();
-      final dynamic value = iterator.current;
       switch (key) {
-        case 'anInt':
-          result.anInt = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
+        case 'empty':
+          builder.empty();
           break;
-        case 'aString':
-          result.aString = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+        case 'integer':
+          iterator.moveNext();
+          final dynamic value0 = iterator.current;
+          builder.integer(serializers.deserialize(value0,
+              specifiedType: const FullType(int)));
+          break;
+        case 'tuple':
+          iterator.moveNext();
+          final dynamic value0 = iterator.current;
+          iterator.moveNext();
+          final dynamic value1 = iterator.current;
+
+          builder.tuple(
+              serializers.deserialize(value0,
+                  specifiedType: const FullType(int)),
+              serializers.deserialize(value1,
+                  specifiedType: const FullType(String)));
+          break;
+        case 'string':
+          iterator.moveNext();
+          final dynamic value0 = iterator.current;
+          builder.integer(serializers.deserialize(value0,
+              specifiedType: const FullType(String)));
+          break;
+        case 'fooInt':
+          iterator.moveNext();
+          final dynamic value0 = iterator.current;
+          builder.fooInt(serializers.deserialize(value0,
+              specifiedType: const FullType(Foo)));
+          break;
+        case 'fooString':
+          iterator.moveNext();
+          final dynamic value0 = iterator.current;
+          builder.fooInt(serializers.deserialize(value0,
+              specifiedType: const FullType(Foo)));
           break;
       }
     }
 
-    return result.build();
+    return builder.build();
   }
 }
-
-*/
-
 
 enum _$SimpleUnionType {
   empty,
@@ -89,13 +130,13 @@ class _$SimpleUnion extends SimpleUnion {
 
   @override
   T match<T>({
-      @required T Function () empty,
-      @required T Function (int) integer,
-      @required T Function (int, String) tuple,
-      @required T Function (String) string,
-      @required T Function (Foo<int>) fooInt,
-      @required T Function (Foo<String>) fooString,
-    }) {
+    @required T Function() empty,
+    @required T Function(int) integer,
+    @required T Function(int, String) tuple,
+    @required T Function(String) string,
+    @required T Function(Foo<int>) fooInt,
+    @required T Function(Foo<String>) fooString,
+  }) {
     switch (_type) {
       case _$SimpleUnionType.empty:
         return empty();
@@ -128,11 +169,18 @@ class _$SimpleUnion extends SimpleUnion {
     return other is SimpleUnion &&
         other.match(
           empty: () => _type == _$SimpleUnionType.empty,
-          integer: (otherValue0) => _type == _$SimpleUnionType.integer && _values[0] == otherValue0,
-          tuple: (otherValue0, otherValue1) => _type == _$SimpleUnionType.empty && _values[0] == otherValue0 && _values[1] == otherValue1,
-          string: (otherValue0) => _type == _$SimpleUnionType.string && _values[0] == otherValue0,
-          fooInt: (otherValue0) => _type == _$SimpleUnionType.fooInt && _values[0] == otherValue0,
-          fooString: (otherValue0) => _type == _$SimpleUnionType.fooString && _values[0] == otherValue0,
+          integer: (otherValue0) =>
+              _type == _$SimpleUnionType.integer && _values[0] == otherValue0,
+          tuple: (otherValue0, otherValue1) =>
+              _type == _$SimpleUnionType.empty &&
+              _values[0] == otherValue0 &&
+              _values[1] == otherValue1,
+          string: (otherValue0) =>
+              _type == _$SimpleUnionType.string && _values[0] == otherValue0,
+          fooInt: (otherValue0) =>
+              _type == _$SimpleUnionType.fooInt && _values[0] == otherValue0,
+          fooString: (otherValue0) =>
+              _type == _$SimpleUnionType.fooString && _values[0] == otherValue0,
         );
   }
 
@@ -154,18 +202,23 @@ class SimpleUnionBuilder implements Builder<SimpleUnion, SimpleUnionBuilder> {
   void empty() {
     _$v = _$SimpleUnion._(_$SimpleUnionType.empty, []);
   }
+
   void integer(int value0) {
     _$v = _$SimpleUnion._(_$SimpleUnionType.integer, [value0]);
   }
+
   void tuple(int value0, String value1) {
     _$v = _$SimpleUnion._(_$SimpleUnionType.tuple, [value0, value1]);
   }
+
   void string(String value0) {
     _$v = _$SimpleUnion._(_$SimpleUnionType.string, [value0]);
   }
+
   void fooInt(Foo<int> value0) {
     _$v = _$SimpleUnion._(_$SimpleUnionType.fooInt, [value0]);
   }
+
   void fooString(Foo<String> value0) {
     _$v = _$SimpleUnion._(_$SimpleUnionType.fooString, [value0]);
   }

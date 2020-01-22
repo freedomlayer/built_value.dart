@@ -30,7 +30,7 @@ abstract class SimpleUnion implements Built<SimpleUnion, SimpleUnionBuilder> {
   /// Declare a static final [Serializer] field called `serializer`.
   /// The built_value code generator will provide the implementation. You need
   /// to do this for every type you want to serialize.
-  // static Serializer<SimpleValue> get serializer => _$simpleValueSerializer;
+  static Serializer<SimpleUnion> get serializer => _$simpleUnionSerializer;
 
   T match<T>({
       @required T Function () empty,

@@ -52,11 +52,9 @@ void example() {
   final modifiedAnimals =
       animals.map((animal) => animal.rebuild((b) => b.legs++)).toList();
 
-
   // Unions
   var foo = Foo<int>(3);
-  final unionValue1 = SimpleUnion((b) => b.fooInt(foo)
-    );
+  final unionValue1 = SimpleUnion((b) => b.fooInt(foo));
 
   var descString = unionValue1.match(
       empty: () => 'empty',
@@ -100,6 +98,10 @@ void example() {
     value8,
     modifiedAnimals[0],
     modifiedAnimals[1],
+    // unionValue1,
+    unionValue2,
+    unionValue3,
+    // unionValue4,
   ]) {
     var serialized = serializers.serialize(object);
     print(serialized);

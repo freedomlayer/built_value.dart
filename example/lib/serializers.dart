@@ -10,6 +10,7 @@ import 'package:built_value/serializer.dart';
 import 'package:example/generics.dart';
 import 'package:example/polymorphism.dart';
 import 'package:example/values.dart';
+import 'package:example/union.dart';
 
 part 'serializers.g.dart';
 
@@ -32,5 +33,6 @@ part 'serializers.g.dart';
   GenericValue,
   SimpleValue,
   VerySimpleValue,
+  SimpleUnion,
 ])
 final Serializers serializers = _$serializers;
