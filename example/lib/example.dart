@@ -101,7 +101,7 @@ void example() {
     // unionValue1,
     unionValue2,
     unionValue3,
-    // unionValue4,
+    unionValue4,
   ]) {
     var serialized = serializers.serialize(object);
     print(serialized);

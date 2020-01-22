@@ -172,7 +172,7 @@ class _$SimpleUnion extends SimpleUnion {
           integer: (otherValue0) =>
               _type == _$SimpleUnionType.integer && _values[0] == otherValue0,
           tuple: (otherValue0, otherValue1) =>
-              _type == _$SimpleUnionType.empty &&
+              _type == _$SimpleUnionType.tuple &&
               _values[0] == otherValue0 &&
               _values[1] == otherValue1,
           string: (otherValue0) =>
