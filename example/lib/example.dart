@@ -3,6 +3,7 @@ import 'package:example/generics.dart';
 import 'package:example/polymorphism.dart';
 import 'package:example/serializers.dart';
 import 'package:example/values.dart';
+import 'package:example/union.dart';
 
 /// Simple usage examples for built_value.
 void example() {
@@ -50,6 +51,22 @@ void example() {
   ];
   final modifiedAnimals =
       animals.map((animal) => animal.rebuild((b) => b.legs++)).toList();
+
+
+  // Unions
+  var foo = Foo<int>(3);
+  final unionValue = SimpleUnion((b) => b
+      ..integer = 3
+      ..fooInt = foo
+    );
+
+  var descString = unionValue.match(
+      integer: (_) => 'integer',
+      string: (_) => 'string',
+      fooInt: (_) => 'fooInt',
+      fooString: (_) => 'fooString');
+
+  assert(descString == 'fooInt');
 
   // Everything is serializable.
   for (var object in [
