@@ -197,49 +197,23 @@ void unionJsonExample() {
   final standardSerializers =
       (serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();
 
-  /*
   final simpleUnionTuple = SimpleUnion((b) => b.tuple(5, "five"));
   final serialized1 =
       standardSerializers.serializeWith(SimpleUnion.serializer, simpleUnionTuple);
-  print(serialized1);
-  */
+  // print(serialized1);
+
+  final expectedSerialized1 = {
+    'tuple': [5, 'five'],
+  };
+  
+  assert(serialized1.toString() == expectedSerialized1.toString());
 
   final simpleUnionEmpty = SimpleUnion((b) => b.empty());
   final serialized2 =
       standardSerializers.serializeWith(SimpleUnion.serializer, simpleUnionEmpty);
-  print(serialized2);
+  // print(serialized2);
 
-  /*
-  assert(serializedAccount.toString() == serializedAgain.toString());
+  final expectedSerialized2 = 'empty';
+  assert(serialized2.toString() == expectedSerialized2.toString());
 
-  // In this second example we don't know the type we want to
-  // serialize/deserialize, so it has to be specified on the wire.
-  final serializedAccountWithDiscriminator = {
-    r'$': 'Account',
-    'id': 3,
-    'name': 'John Smith',
-    'keyValues': {
-      'visited': 1732,
-      'active': true,
-      'email': 'john.smith@example.com',
-      'tags': [74, 123, 4001],
-      'preferences': {
-        'showMenu': true,
-        'skipIntro': true,
-        'colorScheme': 'light',
-      }
-    }
-  };
-
-  // We don't have to specify the type when deserializing.
-  final value2 =
-      standardSerializers.deserialize(serializedAccountWithDiscriminator);
-  print(value2);
-  assert(value == value2);
-
-  // We don't have to specify the type when serializing.
-  final serializedAgain2 = standardSerializers.serialize(value2);
-  assert(serializedAccountWithDiscriminator.toString() ==
-      serializedAgain2.toString());
-  */
 }

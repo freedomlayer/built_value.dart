@@ -44,6 +44,10 @@ class StandardJsonPlugin implements SerializerPlugin {
       if (specifiedType.isUnspecified) {
         return _toMapWithDiscriminator(object);
       } else {
+        // A case used for an empty Union variant:
+        if (object.length == 1 && object[0] != 'list') {
+          return object[0] as String;
+        }
         return _toMap(object, _needsEncodedKeys(specifiedType));
       }
     } else {
