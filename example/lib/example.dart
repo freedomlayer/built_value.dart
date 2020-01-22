@@ -197,12 +197,17 @@ void unionJsonExample() {
   final standardSerializers =
       (serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();
 
+  /*
   final simpleUnionTuple = SimpleUnion((b) => b.tuple(5, "five"));
-  // final simpleUnionEmpty = SimpleUnion((b) => b.empty());
-  // Use the serializeWith method to specify what type you're serializing.
-  final serialized =
+  final serialized1 =
       standardSerializers.serializeWith(SimpleUnion.serializer, simpleUnionTuple);
-  print(serialized);
+  print(serialized1);
+  */
+
+  final simpleUnionEmpty = SimpleUnion((b) => b.empty());
+  final serialized2 =
+      standardSerializers.serializeWith(SimpleUnion.serializer, simpleUnionEmpty);
+  print(serialized2);
 
   /*
   assert(serializedAccount.toString() == serializedAgain.toString());

@@ -25,9 +25,9 @@ class _$SimpleUnionSerializer implements StructuredSerializer<SimpleUnion> {
             ],
         tuple: (value0, value1) => <Object>[
               'tuple',
-              serializers.serialize(value0, specifiedType: const FullType(int)),
+              <Object>[serializers.serialize(value0, specifiedType: const FullType(int)),
               serializers.serialize(value1,
-                  specifiedType: const FullType(String))
+                  specifiedType: const FullType(String))]
             ],
         string: (value0) => <Object>[
               'string',
@@ -58,17 +58,19 @@ class _$SimpleUnionSerializer implements StructuredSerializer<SimpleUnion> {
     final iterator = serialized.iterator;
     iterator.moveNext();
     final key = iterator.current as String;
+    iterator.moveNext();
+    final Object value = iterator.current;
     switch (key) {
       case 'empty':
         builder.empty();
         break;
       case 'integer':
         iterator.moveNext();
-        final dynamic value0 = iterator.current;
-        builder.integer(serializers.deserialize(value0,
+        builder.integer(serializers.deserialize(value,
             specifiedType: const FullType(int)));
         break;
       case 'tuple':
+        final iterator = (value as Iterable<Object>).iterator;
         iterator.moveNext();
         final dynamic value0 = iterator.current;
         iterator.moveNext();
@@ -80,21 +82,15 @@ class _$SimpleUnionSerializer implements StructuredSerializer<SimpleUnion> {
                 specifiedType: const FullType(String)));
         break;
       case 'string':
-        iterator.moveNext();
-        final dynamic value0 = iterator.current;
-        builder.integer(serializers.deserialize(value0,
+        builder.integer(serializers.deserialize(value,
             specifiedType: const FullType(String)));
         break;
       case 'fooInt':
-        iterator.moveNext();
-        final dynamic value0 = iterator.current;
-        builder.fooInt(serializers.deserialize(value0,
+        builder.fooInt(serializers.deserialize(value,
             specifiedType: const FullType(Foo)));
         break;
       case 'fooString':
-        iterator.moveNext();
-        final dynamic value0 = iterator.current;
-        builder.fooInt(serializers.deserialize(value0,
+        builder.fooInt(serializers.deserialize(value,
             specifiedType: const FullType(Foo)));
         break;
     }
