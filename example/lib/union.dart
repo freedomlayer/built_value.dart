@@ -67,28 +67,11 @@ class SimpleUnion extends _$SimpleUnion {
   /// to do this for every type you want to serialize.
   static Serializer<SimpleUnion> get serializer => _$simpleUnionSerializer;
 
-  /*
-  T match<T>({
-      @required T Function () empty,
-      @required T Function (int) integer,
-      @required T Function (int, String) tuple,
-      @required T Function (String) string,
-      @required T Function (Foo<int>) fooInt,
-      @required T Function (Foo<String>) fooString,
-    });
-  */
-
   SimpleUnion.empty(): super.empty();
   SimpleUnion.integer(int integer): super.integer(integer);
   SimpleUnion.tuple(int tupleInt, String tupleString): super.tuple(tupleInt, tupleString);
   SimpleUnion.string(String string): super.string(string);
   SimpleUnion.fooInt(Foo<int> fooInt): super.fooInt(fooInt);
   SimpleUnion.fooString(Foo<String> fooString): super.fooString(fooString);
-
-  /*
-  factory SimpleUnion([void Function(SimpleUnionBuilder) updates]) =
-      _$SimpleUnion;
-  SimpleUnion._();
-  */
 }
 
