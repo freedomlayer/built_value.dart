@@ -146,6 +146,13 @@ abstract class _$SimpleUnion {
     }
   }
 
+  bool get isEmpty => _type == _$SimpleUnionType.empty;
+  bool get isInteger => _type == _$SimpleUnionType.integer;
+  bool get isTuple => _type == _$SimpleUnionType.tuple;
+  bool get isString => _type == _$SimpleUnionType.string;
+  bool get isfooInt => _type == _$SimpleUnionType.fooInt;
+  bool get isFooString => _type == _$SimpleUnionType.fooString;
+
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) {
