@@ -54,7 +54,7 @@ void example() {
 
   // Unions
   var foo = Foo<int>(3);
-  final unionValue1 = SimpleUnion((b) => b.fooInt(foo));
+  final unionValue1 = SimpleUnion.fooInt(foo);
 
   var descString = unionValue1.match(
       empty: () => 'empty',
@@ -67,13 +67,13 @@ void example() {
   assert(descString == 'fooInt');
 
   // Check equality operator:
-  final unionValue2 = SimpleUnion((b) => b.integer(3));
-  final unionValue3 = SimpleUnion((b) => b.integer(3));
+  final unionValue2 = SimpleUnion.integer(3);
+  final unionValue3 = SimpleUnion.integer(3);
 
   assert(unionValue2 == unionValue3);
 
   // Check tuple:
-  final unionValue4 = SimpleUnion((b) => b.tuple(4, 'four'));
+  final unionValue4 = SimpleUnion.tuple(4, 'four');
 
   var res = unionValue4.match(
       empty: () => [],
@@ -86,7 +86,7 @@ void example() {
   assert(res[0] == 4);
   assert(res[1] == 'four');
 
-  final unionValue5 = SimpleUnion((b) => b.empty());
+  final unionValue5 = SimpleUnion.empty();
 
   // Everything is serializable.
   for (var object in [
@@ -197,7 +197,7 @@ void unionJsonExample() {
   final standardSerializers =
       (serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();
 
-  final simpleUnionTuple = SimpleUnion((b) => b.tuple(5, "five"));
+  final simpleUnionTuple = SimpleUnion.tuple(5, 'five');
   final serialized1 =
       standardSerializers.serializeWith(SimpleUnion.serializer, simpleUnionTuple);
   // print(serialized1);
@@ -208,7 +208,7 @@ void unionJsonExample() {
   
   assert(serialized1.toString() == expectedSerialized1.toString());
 
-  final simpleUnionEmpty = SimpleUnion((b) => b.empty());
+  final simpleUnionEmpty = SimpleUnion.empty();
   final serialized2 =
       standardSerializers.serializeWith(SimpleUnion.serializer, simpleUnionEmpty);
   // print(serialized2);

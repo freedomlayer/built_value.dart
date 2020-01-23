@@ -59,7 +59,7 @@ class FooSerializer<T> implements StructuredSerializer<Foo<T>> {
 /// fields declared as abstract getters. Finally, it must have a particular
 /// constructor and factory, as shown here.
 // @union
-abstract class SimpleUnion implements Built<SimpleUnion, SimpleUnionBuilder> {
+class SimpleUnion extends _$SimpleUnion {
   /// Example of how to make a built_value type serializable.
   ///
   /// Declare a static final [Serializer] field called `serializer`.
@@ -67,6 +67,7 @@ abstract class SimpleUnion implements Built<SimpleUnion, SimpleUnionBuilder> {
   /// to do this for every type you want to serialize.
   static Serializer<SimpleUnion> get serializer => _$simpleUnionSerializer;
 
+  /*
   T match<T>({
       @required T Function () empty,
       @required T Function (int) integer,
@@ -75,9 +76,19 @@ abstract class SimpleUnion implements Built<SimpleUnion, SimpleUnionBuilder> {
       @required T Function (Foo<int>) fooInt,
       @required T Function (Foo<String>) fooString,
     });
+  */
 
+  SimpleUnion.empty(): super.empty();
+  SimpleUnion.integer(int integer): super.integer(integer);
+  SimpleUnion.tuple(int tupleInt, String tupleString): super.tuple(tupleInt, tupleString);
+  SimpleUnion.string(String string): super.string(string);
+  SimpleUnion.fooInt(Foo<int> fooInt): super.fooInt(fooInt);
+  SimpleUnion.fooString(Foo<String> fooString): super.fooString(fooString);
+
+  /*
   factory SimpleUnion([void Function(SimpleUnionBuilder) updates]) =
       _$SimpleUnion;
   SimpleUnion._();
+  */
 }
 

@@ -53,20 +53,20 @@ class _$SimpleUnionSerializer implements StructuredSerializer<SimpleUnion> {
   @override
   SimpleUnion deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final builder = new SimpleUnionBuilder();
 
     final iterator = serialized.iterator;
     iterator.moveNext();
     final key = iterator.current as String;
     iterator.moveNext();
     final Object value = iterator.current;
+    var result;
     switch (key) {
       case 'empty':
-        builder.empty();
+        result = SimpleUnion.empty();
         break;
       case 'integer':
         iterator.moveNext();
-        builder.integer(serializers.deserialize(value,
+        result = SimpleUnion.integer(serializers.deserialize(value,
             specifiedType: const FullType(int)));
         break;
       case 'tuple':
@@ -76,26 +76,26 @@ class _$SimpleUnionSerializer implements StructuredSerializer<SimpleUnion> {
         iterator.moveNext();
         final dynamic value1 = iterator.current;
 
-        builder.tuple(
+        result = SimpleUnion.tuple(
             serializers.deserialize(value0, specifiedType: const FullType(int)),
             serializers.deserialize(value1,
                 specifiedType: const FullType(String)));
         break;
       case 'string':
-        builder.integer(serializers.deserialize(value,
+        result = SimpleUnion.integer(serializers.deserialize(value,
             specifiedType: const FullType(String)));
         break;
       case 'fooInt':
-        builder.fooInt(serializers.deserialize(value,
+        result = SimpleUnion.fooInt(serializers.deserialize(value,
             specifiedType: const FullType(Foo)));
         break;
       case 'fooString':
-        builder.fooInt(serializers.deserialize(value,
+        result = SimpleUnion.fooInt(serializers.deserialize(value,
             specifiedType: const FullType(Foo)));
         break;
     }
 
-    return builder.build();
+    return result;
   }
 }
 
@@ -108,25 +108,17 @@ enum _$SimpleUnionType {
   fooString,
 }
 
-class _$SimpleUnion extends SimpleUnion {
+abstract class _$SimpleUnion {
   final _$SimpleUnionType _type;
   final List<Object> _values;
 
-  factory _$SimpleUnion([void Function(SimpleUnionBuilder) updates]) =>
-      (new SimpleUnionBuilder()..update(updates)).build();
+  _$SimpleUnion.empty(): _type = _$SimpleUnionType.empty, _values = [];
+  _$SimpleUnion.integer(int integer): _type = _$SimpleUnionType.integer, _values = [integer];
+  _$SimpleUnion.tuple(int tupleInteger, String tupleString): _type = _$SimpleUnionType.tuple, _values = [tupleInteger, tupleString];
+  _$SimpleUnion.string(String string): _type = _$SimpleUnionType.string, _values = [string];
+  _$SimpleUnion.fooInt(Foo<int> fooInt): _type = _$SimpleUnionType.fooInt, _values = [fooInt];
+  _$SimpleUnion.fooString(Foo<String> fooString): _type = _$SimpleUnionType.fooString, _values = [fooString];
 
-  _$SimpleUnion._(this._type, this._values) : super._() {
-    if (_type == null) {
-      // TODO: Better exception to throw here?
-      throw Exception('SimpleUnion: null type');
-    }
-    if (_values == null) {
-      // TODO: Better exception to throw here?
-      throw Exception('SimpleUnion: null value');
-    }
-  }
-
-  @override
   T match<T>({
     @required T Function() empty,
     @required T Function(int) integer,
@@ -155,31 +147,26 @@ class _$SimpleUnion extends SimpleUnion {
   }
 
   @override
-  SimpleUnion rebuild(void Function(SimpleUnionBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
-
-  @override
-  SimpleUnionBuilder toBuilder() => new SimpleUnionBuilder()..replace(this);
-
-  @override
   bool operator ==(Object other) {
-    if (identical(other, this)) return true;
-    return other is SimpleUnion &&
-        other.match(
-          empty: () => _type == _$SimpleUnionType.empty,
-          integer: (otherValue0) =>
-              _type == _$SimpleUnionType.integer && _values[0] == otherValue0,
-          tuple: (otherValue0, otherValue1) =>
-              _type == _$SimpleUnionType.tuple &&
-              _values[0] == otherValue0 &&
-              _values[1] == otherValue1,
-          string: (otherValue0) =>
-              _type == _$SimpleUnionType.string && _values[0] == otherValue0,
-          fooInt: (otherValue0) =>
-              _type == _$SimpleUnionType.fooInt && _values[0] == otherValue0,
-          fooString: (otherValue0) =>
-              _type == _$SimpleUnionType.fooString && _values[0] == otherValue0,
-        );
+    if (identical(other, this)) {
+      return true;
+    }
+    if (other is _$SimpleUnion) {
+      if (_type != other._type) {
+        return false;
+      }
+      if (_values.length != other._values.length) {
+        return false;
+      }
+      for (var i=0; i < _values.length; ++i) {
+        if (_values[i] != other._values[i]) {
+          return false;
+        }
+      }
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @override
@@ -197,59 +184,6 @@ class _$SimpleUnion extends SimpleUnion {
         ..add('value', _values)
         ..add('type', _type))
       .toString();
-}
-
-class SimpleUnionBuilder implements Builder<SimpleUnion, SimpleUnionBuilder> {
-  _$SimpleUnion _$v;
-
-  void empty() {
-    _$v = _$SimpleUnion._(_$SimpleUnionType.empty, []);
-  }
-
-  void integer(int value0) {
-    _$v = _$SimpleUnion._(_$SimpleUnionType.integer, [value0]);
-  }
-
-  void tuple(int value0, String value1) {
-    _$v = _$SimpleUnion._(_$SimpleUnionType.tuple, [value0, value1]);
-  }
-
-  void string(String value0) {
-    _$v = _$SimpleUnion._(_$SimpleUnionType.string, [value0]);
-  }
-
-  void fooInt(Foo<int> value0) {
-    _$v = _$SimpleUnion._(_$SimpleUnionType.fooInt, [value0]);
-  }
-
-  void fooString(Foo<String> value0) {
-    _$v = _$SimpleUnion._(_$SimpleUnionType.fooString, [value0]);
-  }
-
-  SimpleUnionBuilder();
-
-  @override
-  void replace(SimpleUnion other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
-    _$v = other as _$SimpleUnion;
-  }
-
-  @override
-  void update(void Function(SimpleUnionBuilder) updates) {
-    if (updates != null) updates(this);
-  }
-
-  @override
-  _$SimpleUnion build() {
-    if (_$v == null) {
-      throw new ArgumentError.notNull('SimpleUnion');
-    }
-    final _$result = _$v;
-    replace(_$result);
-    return _$result;
-  }
 }
 
 // ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
